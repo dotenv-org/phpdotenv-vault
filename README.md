@@ -15,6 +15,7 @@ As early as possible in your application bootstrap process, load .env:
 
 use DotenvVault\DotenvVault;
 require __DIR__.'/vendor/autoload.php';
+include __DIR__.'/vendor/dotenv-org/phpdotenv-vault/src/DotEnvVault.php';
 
 $dotenv = DotenvVault::createImmutable(__DIR__, '.env.vault');
 $dotenv->load(); # take environment variables from .env.vault

@@ -12,7 +12,7 @@
     "license": "BSD-3-Clause",
     "autoload": {
         "psr-4": {
-            "PhpdotenvVault\\": "src/"
+            "DotenvVault\\": "src/"
         }
     },
     "authors": [
@@ -29,7 +29,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "PhpdotenvVault\\PhpdotenvVaultServiceProvider"
+                "DotenvVault\\DotenvVaultServiceProvider"
             ]
         }
     },
