@@ -1,39 +1,39 @@
 {
-    "name": "dotenv-org/phpdotenv-vault",
-    "description": "Loads environment variables from `.env` or `.env.vault`",
-    "keywords": [
-        "env",
-        "dotenv",
-        "environment",
-        "environment variables",
-        "dotenv-vault",
-        "configurations"
-    ],
-    "license": "BSD-3-Clause",
-    "autoload": {
-        "psr-4": {
-            "DotenvVault\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "dotenv",
-            "email": "mot@dotenv.org",
-            "homepage": "https://github.com/dotenv-org"
-        }
-    ],
-    "require": {
-        "php": "^7.1.3 || ^8.0",
-        "vlucas/phpdotenv": "^5.5"
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "DotenvVault\\DotenvVaultServiceProvider"
-            ]
-        }
-    },
-    "require-dev": {
-        "orchestra/testbench": "^3.8"
+  "name": "dotenv-org/phpdotenv-vault",
+  "description": "Load environment variables from encrypted .env.vault files",
+  "keywords": [
+    "env",
+    "dotenv",
+    "environment",
+    "environment variables",
+    "dotenv-vault",
+    "configurations"
+  ],
+  "license": "BSD-3-Clause",
+  "autoload": {
+    "psr-4": {
+      "DotenvVault\\": "src/"
     }
+  },
+  "authors": [
+    {
+      "name": "dotenv",
+      "email": "mot@dotenv.org",
+      "homepage": "https://github.com/dotenv-org"
+    }
+  ],
+  "require": {
+    "php": "^7.1.3 || ^8.0",
+    "vlucas/phpdotenv": "^5.5"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "DotenvVault\\DotenvVaultServiceProvider"
+      ]
+    }
+  },
+  "require-dev": {
+    "orchestra/testbench": "^3.8"
+  }
 }
