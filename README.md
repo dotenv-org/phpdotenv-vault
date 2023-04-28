@@ -154,4 +154,4 @@ See [CHANGELOG.md](CHANGELOG.md)
 
 ## License
 
-MIT
+BSD-3
