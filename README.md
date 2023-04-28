@@ -1,4 +1,4 @@
-# PHP dotenv-vault
+# PHP dotenv-vault [![PHP version](https://badge.fury.io/ph/dotenv-org%2Fphpdotenv-vault.svg)](https://badge.fury.io/ph/dotenv-org%2Fphpdotenv-vault)
 
 <img src="https://raw.githubusercontent.com/motdotla/dotenv/master/dotenv.svg" alt="dotenv-vault" align="right" width="200" />
 
