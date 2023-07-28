@@ -44,7 +44,7 @@ class DotEnvVault extends Dotenv
 
             $plaintext = $this->parse_vault();
 
-            // parsing plaintext and loading to $_ENV
+            // parsing plaintext and loading to getenv 
             $test_entries = $this->parser->parse($plaintext);
             $this->loader->load($this->repository, $test_entries);
         }
@@ -78,7 +78,7 @@ class DotEnvVault extends Dotenv
             $vault_environment = strtoupper($vault_environment);
             $environment_key = "DOTENV_VAULT_{$vault_environment}";
 
-            $ciphertext = $_ENV["{$environment_key}"] or throw new DotEnvVaultError("NOT_FOUND_DOTENV_ENVIRONMENT: Cannot locate environment {$environment_key} in your .env.vault file. Run 'npx dotenv-vault build' to include it.");
+            $ciphertext = getenv("{$environment_key}") or throw new DotEnvVaultError("NOT_FOUND_DOTENV_ENVIRONMENT: Cannot locate environment {$environment_key} in your .env.vault file. Run 'npx dotenv-vault build' to include it.");
             
             array_push($keys, array('encrypted_key' => $pass, 'ciphertext' => $ciphertext));
         }
