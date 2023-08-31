@@ -32,6 +32,7 @@ class DotEnvVault extends Dotenv
         $this->parser = $parser;
         $this->loader = $loader;
         $this->repository = $repository;
+        parent::__construct($store, $parser, $loader, $repository);
     }
 
     public function load()
