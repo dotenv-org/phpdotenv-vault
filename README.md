@@ -34,10 +34,10 @@ SECRET_KEY="souper_seekret_key"
 As early as possible in your application bootstrap process, load .env:
 
 ```php
-use DotenvVault\DotenvVault;
+use DotenvVault\DotEnvVault;
 require 'vendor/autoload.php';
 
-$dotenv = DotenvVault::createImmutable(__DIR__, '.env.vault');
+$dotenv = DotEnvVault::createImmutable(__DIR__, '.env.vault');
 $dotenv->load(); # take environment variables from .env.vault
 ```
 
