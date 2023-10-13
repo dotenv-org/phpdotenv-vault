@@ -27,6 +27,6 @@
     "vlucas/phpdotenv": "^5.5"
   },
   "require-dev": {
-    "orchestra/testbench": "^3.8"
+    "orchestra/testbench": "^6.36"
   }
 }

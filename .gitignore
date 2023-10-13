@@ -12,4 +12,5 @@ phpstan.tests.neon
 phpunit.xml
 vendor
 
+.idea
 .vscode

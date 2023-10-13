@@ -16,10 +16,15 @@ class DotEnvVaultError extends Exception { }
 
 class DotEnvVault extends Dotenv
 {
+    /** @var StoreInterface */
     private $store;
+    /** @var ParserInterface */
     private $parser;
+    /** @var LoaderInterface */
     private $loader;
+    /** @var RepositoryInterface */
     private $repository;
+    /** @var string|null */
     private $dotenv_key;
     public function __construct(
         StoreInterface $store,
@@ -44,7 +49,7 @@ class DotEnvVault extends Dotenv
 
             $plaintext = $this->parse_vault();
 
-            // parsing plaintext and loading to getenv 
+            // parsing plaintext and loading to getenv
             $test_entries = $this->parser->parse($plaintext);
             $this->loader->load($this->repository, $test_entries);
         }
@@ -69,17 +74,21 @@ class DotEnvVault extends Dotenv
 
             // get encrypted key
             $pass = $uri['pass'];
-            
+
             // Get environment from query params.
             parse_str($uri['query'], $params);
-            $vault_environment = $params['environment'] or throw new DotEnvVaultError('INVALID_DOTENV_KEY: Missing environment part.');
+            if (!($vault_environment = $params['environment'] ?? false)) {
+                throw new DotEnvVaultError('INVALID_DOTENV_KEY: Missing environment part.');
+            }
 
             # Getting ciphertext from correct environment in .env.vault
             $vault_environment = strtoupper($vault_environment);
             $environment_key = "DOTENV_VAULT_{$vault_environment}";
 
-            $ciphertext = getenv("{$environment_key}") or throw new DotEnvVaultError("NOT_FOUND_DOTENV_ENVIRONMENT: Cannot locate environment {$environment_key} in your .env.vault file. Run 'npx dotenv-vault build' to include it.");
-            
+            if (!($ciphertext = getenv("{$environment_key}"))) {
+                throw new DotEnvVaultError("NOT_FOUND_DOTENV_ENVIRONMENT: Cannot locate environment {$environment_key} in your .env.vault file. Run 'npx dotenv-vault build' to include it.");
+            }
+
             array_push($keys, array('encrypted_key' => $pass, 'ciphertext' => $ciphertext));
         }
         return $this->key_rotation($keys);
@@ -104,12 +113,12 @@ class DotEnvVault extends Dotenv
 
     private function decrypt($data, $secret)
     {
-        $secret = hex2bin(substr($secret, 4, strlen($secret)));         
+        $secret = hex2bin(substr($secret, 4, strlen($secret)));
         $data = base64_decode($data, true);
         $nonce = substr($data, 0, 12);
         $tag = substr($data, -16);
         $ciphertext = substr($data, 12, -16);
-    
+
         try {
             return openssl_decrypt(
                 $ciphertext,
@@ -125,7 +134,7 @@ class DotEnvVault extends Dotenv
     }
 
     public static function createImmutable($paths, $names = null, bool $shortCircuit = true, string $fileEncoding = null)
-    {  
+    {
         $repository = RepositoryBuilder::createWithDefaultAdapters()->immutable()->make();
 
         return self::create($repository, $paths, $names, $shortCircuit, $fileEncoding);
