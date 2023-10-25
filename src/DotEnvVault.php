@@ -1,6 +1,7 @@
 <?php
 
 namespace DotenvVault;
+
 use Dotenv\Dotenv;
 use Dotenv\Loader\Loader;
 use Dotenv\Loader\LoaderInterface;
@@ -11,8 +12,6 @@ use Dotenv\Repository\RepositoryInterface;
 use Dotenv\Store\StoreBuilder;
 use Dotenv\Store\StoreInterface;
 use Exception;
-
-class DotEnvVaultError extends Exception { }
 
 class DotEnvVault extends Dotenv
 {
@@ -26,47 +25,47 @@ class DotEnvVault extends Dotenv
     private $repository;
     /** @var string|null */
     private $dotenv_key;
+
     public function __construct(
         StoreInterface $store,
         ParserInterface $parser,
         LoaderInterface $loader,
         RepositoryInterface $repository
-    )
-    {
+    ) {
         $this->store = $store;
         $this->parser = $parser;
         $this->loader = $loader;
         $this->repository = $repository;
     }
 
+    /**
+     * @throws DotEnvVaultError
+     */
     public function load()
     {
-        $this->dotenv_key = getenv("DOTENV_KEY");
-        if ($this->dotenv_key !== false){
+        $vaultEntries = $this->parser->parse($this->store->read());
+        $vaultArr = $this->loader->load($this->repository, $vaultEntries);
 
-            $entries = $this->parser->parse($this->store->read());
-            $this->loader->load($this->repository, $entries);
-
-            $plaintext = $this->parse_vault();
-
-            // parsing plaintext and loading to getenv
-            $test_entries = $this->parser->parse($plaintext);
-            $this->loader->load($this->repository, $test_entries);
+        $this->dotenv_key = $this->repository->get("DOTENV_KEY");
+        if (empty($this->dotenv_key)) {
+            return $vaultArr;
         }
-        else {
-            $entries = $this->parser->parse($this->store->read());
 
-            var_dump($entries[0]->getName());
-            var_dump($entries[0]->getValue());
+        $decryptedStr = $this->parse_vault();
 
-            return $this->loader->load($this->repository, $entries);
-        }
+        // parsing plaintext and loading into repository
+        $decryptedEntries = $this->parser->parse($decryptedStr);
+        return $this->loader->load($this->repository, $decryptedEntries);
     }
 
-    public function parse_vault()
+    /**
+     * Parses encrypted values within vault.
+     * @throws DotEnvVaultError
+     */
+    public function parse_vault(): ?string
     {
         $dotenv_keys = explode(',', $this->dotenv_key);
-        $keys = array();
+        $keys = [];
         foreach($dotenv_keys as $key)
         {
             // parse DOTENV_KEY, format is a URI.
@@ -85,30 +84,36 @@ class DotEnvVault extends Dotenv
             $vault_environment = strtoupper($vault_environment);
             $environment_key = "DOTENV_VAULT_{$vault_environment}";
 
-            if (!($ciphertext = getenv("{$environment_key}"))) {
+            if (!($ciphertext = $this->repository->get($environment_key))) {
                 throw new DotEnvVaultError("NOT_FOUND_DOTENV_ENVIRONMENT: Cannot locate environment {$environment_key} in your .env.vault file. Run 'npx dotenv-vault build' to include it.");
             }
 
-            array_push($keys, array('encrypted_key' => $pass, 'ciphertext' => $ciphertext));
+            $keys[] = ['encrypted_key' => $pass, 'ciphertext' => $ciphertext];
         }
         return $this->key_rotation($keys);
     }
 
-    private function key_rotation($keys){
+    /**
+     * @throws DotEnvVaultError
+     */
+    private function key_rotation($keys): ?string
+    {
         $count = count($keys);
         foreach($keys as $index=>$value) {
             $decrypt = $this->decrypt($value['ciphertext'], $value['encrypted_key']);
 
-            if ($decrypt == false && $index + 1 >= $count){
+            if ($decrypt === false && $index + 1 >= $count){
                 throw new DotEnvVaultError('INVALID_DOTENV_KEY: Key must be valid.');
             }
-            elseif($decrypt == false){
+            elseif($decrypt === false){
                 continue;
             }
             else{
                 return $decrypt;
             }
         }
+
+        return null;
     }
 
     private function decrypt($data, $secret)
