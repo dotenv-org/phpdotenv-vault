@@ -45,8 +45,8 @@ class DotEnvVault extends Dotenv
             $plaintext = $this->parse_vault();
 
             // parsing plaintext and loading to getenv 
-            $test_entries = $this->parser->parse($plaintext);
-            $this->loader->load($this->repository, $test_entries);
+            $vault_entries = $this->parser->parse($plaintext);
+            $this->loader->load($this->repository, $vault_entries);
         }
         else {
             $entries = $this->parser->parse($this->store->read());
