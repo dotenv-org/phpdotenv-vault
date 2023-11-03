@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [Unreleased](https://github.com/dotenv-org/phpdotenv-vault/compare/v0.1.2...master)
+## [Unreleased](https://github.com/dotenv-org/phpdotenv-vault/compare/v0.1.3...master)
+
+## 0.1.3
+
+### Removed
+
+- Remove `var_dump` when falling back to `.env` file
 
 ## 0.1.2
 
