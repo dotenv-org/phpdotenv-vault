@@ -38,5 +38,11 @@ final class DotenvVaultTest extends TestCase
 
         $dotenv->load();
     }
+
+    public function testDotenvTriesPathsToLoad()
+    {
+        $dotenv = DotenvVault::createMutable([__DIR__, self::$folder]);
+        self::assertCount(4, $dotenv->load());
+    }
 }
 ?>
