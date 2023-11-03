@@ -13,3 +13,5 @@ phpunit.xml
 vendor
 
 .vscode
+
+.phpunit.cache
