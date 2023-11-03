@@ -1,5 +1,13 @@
 # DEVELOPMENT
 
+## Running tests
+
+Tests use PHPUnit.
+
+```
+./vendor/bin/phpunit
+```
+
 ## Publishing
 
 Published at [packagist](https://packagist.org/packages/dotenv-org/phpdotenv-vault)

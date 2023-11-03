@@ -15,6 +15,11 @@
       "DotenvVault\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "DotenvVault\\Tests\\": "tests/"
+    }
+  },
   "authors": [
     {
       "name": "dotenv",
@@ -27,6 +32,6 @@
     "vlucas/phpdotenv": "^5.5"
   },
   "require-dev": {
-    "orchestra/testbench": "^3.8"
+    "phpunit/phpunit": "^10.4"
   }
 }
