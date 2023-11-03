@@ -15,6 +15,11 @@
       "DotenvVault\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "DotenvVault\\Tests\\": "tests/"
+    }
+  },
   "authors": [
     {
       "name": "dotenv",
