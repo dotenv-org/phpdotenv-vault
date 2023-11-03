@@ -51,9 +51,6 @@ class DotEnvVault extends Dotenv
         else {
             $entries = $this->parser->parse($this->store->read());
 
-            var_dump($entries[0]->getName());
-            var_dump($entries[0]->getValue());
-
             return $this->loader->load($this->repository, $entries);
         }
     }
