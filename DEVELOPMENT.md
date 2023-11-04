@@ -1,5 +1,13 @@
 # DEVELOPMENT
 
+## Running tests
+
+Tests use PHPUnit.
+
+```
+./vendor/bin/phpunit --testdox --display-deprecations
+```
+
 ## Publishing
 
 Published at [packagist](https://packagist.org/packages/dotenv-org/phpdotenv-vault)
