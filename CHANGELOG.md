@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [Unreleased](https://github.com/dotenv-org/phpdotenv-vault/compare/v0.2.0...master)
 
+## 0.2.1
+
+### Changed
+
+- Added support for passing string to paths argument.
+
 ## 0.2.0
 
 ### Added

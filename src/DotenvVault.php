@@ -62,7 +62,6 @@ class DotenvVault extends Dotenv {
     {
         $builder = $names === null ? StoreBuilder::createWithDefaultName() : StoreBuilder::createWithNoNames();
 
-        $passedPaths = []
         foreach ((array) $paths as $path) {
             $builder = $builder->addPath($path);
         }
@@ -255,7 +254,7 @@ class DotenvVault extends Dotenv {
     {
         $dotenvVaultPath = null;
 
-        foreach ($this->paths as $dotenvPath) {
+        foreach ((array) $this->paths as $dotenvPath) {
             // Check if the path ends with '.vault'. If not, append '.vault' to the path.
             $dotenvPath .= '/.env.vault';
 

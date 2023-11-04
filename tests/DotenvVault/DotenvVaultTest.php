@@ -53,11 +53,30 @@ final class DotenvVaultTest extends TestCase
         self::assertEquals($_ENV['BAR'], 'baz');
     }
 
+    public function testLoadsFromEnvFileAndPathsPassedAsString()
+    {
+        $dotenvVault = DotenvVault::createImmutable(self::$folder);
+        $dotenvVault->load();
+
+        self::assertEquals($_ENV['FOO'], 'bar');
+        self::assertEquals($_ENV['BAR'], 'baz');
+    }
+
     public function testLoadsFromEnvVaultFileWhenDotenvKeyPresent()
     {
         $_ENV["DOTENV_KEY"] = 'dotenv://:key_ddcaa26504cd70a6fef9801901c3981538563a1767c297cb8416e8a38c62fe00@dotenv.org/vault/.env.vault?environment=development';
 
         $dotenvVault = DotenvVault::createImmutable([__DIR__, self::$folder]);
+        $dotenvVault->load();
+
+        self::assertEquals($_ENV['ALPHA'], 'zeta');
+    }
+
+    public function testLoadsFromEnvVaultFileWhenDotenvKeyPresentAndPathsPassedAsString()
+    {
+        $_ENV["DOTENV_KEY"] = 'dotenv://:key_ddcaa26504cd70a6fef9801901c3981538563a1767c297cb8416e8a38c62fe00@dotenv.org/vault/.env.vault?environment=development';
+
+        $dotenvVault = DotenvVault::createImmutable(self::$folder);
         $dotenvVault->load();
 
         self::assertEquals($_ENV['ALPHA'], 'zeta');
