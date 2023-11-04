@@ -62,6 +62,7 @@ class DotenvVault extends Dotenv {
     {
         $builder = $names === null ? StoreBuilder::createWithDefaultName() : StoreBuilder::createWithNoNames();
 
+        $passedPaths = []
         foreach ((array) $paths as $path) {
             $builder = $builder->addPath($path);
         }
@@ -132,7 +133,7 @@ class DotenvVault extends Dotenv {
 
         // // dotenvKey exists but .env.vault file does not exist
         if (!$vaultPath || !file_exists($vaultPath)) {
-            trigger_error('You set DOTENV_KEY but you are missing a .env.vault file at ' . $vaultPath . '. Did you forget to build it?', E_USER_WARNING);
+            trigger_error("You set DOTENV_KEY but you are missing a .env.vault file at '{$vaultPath}'. Did you forget to build it?", E_USER_WARNING);
 
             return $this->_loadDotenv();
         }

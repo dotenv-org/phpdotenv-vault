@@ -36,7 +36,7 @@ As early as possible in your application bootstrap process, load .env:
 ```php
 require 'vendor/autoload.php';
 
-$dotenv = DotenvVault\DotenvVault::createImmutable(__DIR__);
+$dotenv = DotenvVault\DotenvVault::createImmutable([__DIR__]);
 $dotenv->safeLoad();
 ```
 
