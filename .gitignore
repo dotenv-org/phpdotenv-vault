@@ -1,9 +1,7 @@
-
-# Environments
-.env
+.env*
 .venv
-.env.vault
-.env.me
+!.env.vault
+!tests/**/.env*
 
 .phpunit.result.cache
 composer.lock
