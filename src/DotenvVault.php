@@ -9,6 +9,8 @@ use Dotenv\Loader\Loader;
 use Dotenv\Loader\LoaderInterface;
 use Dotenv\Parser\Parser;
 use Dotenv\Parser\ParserInterface;
+use Dotenv\Repository\Adapter\ArrayAdapter;
+use Dotenv\Repository\Adapter\PutenvAdapter;
 use Dotenv\Repository\RepositoryBuilder;
 use Dotenv\Repository\RepositoryInterface;
 use Dotenv\Store\StoreBuilder;
@@ -77,8 +79,45 @@ class DotenvVault extends Dotenv {
         return new self($builder->fileEncoding($fileEncoding)->make(), new Parser(), new Loader(), $repository, $paths);
     }
 
+
     /**
-     * Create a new immutable dotenvVault instance with default repository.
+     * Create a new mutable dotenv instance with default repository.
+     *
+     * @param string|string[]      $paths
+     * @param string|string[]|null $names
+     * @param bool                 $shortCircuit
+     * @param string|null          $fileEncoding
+     *
+     * @return \DotenvVault\DotenvVault
+     */
+    public static function createMutable($paths, $names = null, bool $shortCircuit = true, string $fileEncoding = null)
+    {
+        $repository = RepositoryBuilder::createWithDefaultAdapters()->make();
+
+        return self::create($repository, $paths, $names, $shortCircuit, $fileEncoding);
+    }
+
+    /**
+     * Create a new mutable dotenv instance with default repository with the putenv adapter.
+     *
+     * @param string|string[]      $paths
+     * @param string|string[]|null $names
+     * @param bool                 $shortCircuit
+     * @param string|null          $fileEncoding
+     *
+     * @return \DotenvVault\DotenvVault
+     */
+    public static function createUnsafeMutable($paths, $names = null, bool $shortCircuit = true, string $fileEncoding = null)
+    {
+        $repository = RepositoryBuilder::createWithDefaultAdapters()
+            ->addAdapter(PutenvAdapter::class)
+            ->make();
+
+        return self::create($repository, $paths, $names, $shortCircuit, $fileEncoding);
+    }
+
+    /**
+     * Create a new immutable dotenv instance with default repository.
      *
      * @param string|string[]      $paths
      * @param string|string[]|null $names
@@ -88,14 +127,14 @@ class DotenvVault extends Dotenv {
      * @return \DotenvVault\DotenvVault
      */
     public static function createImmutable($paths, $names = null, bool $shortCircuit = true, string $fileEncoding = null)
-    {  
+    {
         $repository = RepositoryBuilder::createWithDefaultAdapters()->immutable()->make();
 
         return self::create($repository, $paths, $names, $shortCircuit, $fileEncoding);
     }
 
     /**
-     * Create a new immutable dotenvVault instance with default repository with the putenv adapter.
+     * Create a new immutable dotenv instance with default repository with the putenv adapter.
      *
      * @param string|string[]      $paths
      * @param string|string[]|null $names
@@ -112,13 +151,6 @@ class DotenvVault extends Dotenv {
             ->make();
 
         return self::create($repository, $paths, $names, $shortCircuit, $fileEncoding);
-    }
-
-    public function _loadDotenv()
-    {
-        $entries = $this->parser->parse($this->store->read());
-
-        return $this->loader->load($this->repository, $entries);
     }
 
     public function load()
@@ -138,6 +170,17 @@ class DotenvVault extends Dotenv {
         }
 
         $this->_loadVault();
+    }
+
+    //
+    // public functions treated like private functions.
+    // exposed publicly for convenience of your consumption.
+    //
+    public function _loadDotenv()
+    {
+        $entries = $this->parser->parse($this->store->read());
+
+        return $this->loader->load($this->repository, $entries);
     }
 
     public function _loadVault() {
@@ -200,11 +243,6 @@ class DotenvVault extends Dotenv {
         }
 
         return $decrypted;
-
-        // Parse contents of decrypted DOTENV_VAULT_${ENVIRONMENT}
-        // $vaultEntries = (new Parser())->parse($decrypted);
-
-        // return $vaultEntries;
     }
 
     public function _instructions($lookups, $dotenvKey) {
@@ -266,17 +304,5 @@ class DotenvVault extends Dotenv {
         }
 
         return $dotenvVaultPath;
-    }
-
-    public function _readFromFile(string $path, string $encoding = null)
-    {
-        /** @var Option<string> */
-        $content = Option::fromValue(@\file_get_contents($path), false);
-
-        return $content->flatMap(static function (string $content) use ($encoding) {
-            return Str::utf8($content, $encoding)->mapError(static function (string $error) {
-                throw new Exception($error);
-            })->success();
-        });
     }
 }

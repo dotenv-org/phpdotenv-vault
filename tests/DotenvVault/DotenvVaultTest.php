@@ -40,11 +40,11 @@ final class DotenvVaultTest extends TestCase
 
     public function testTriesPathsToLoad()
     {
-        $dotenvVault = DotenvVault::createMutable([__DIR__, self::$folder]);
+        $dotenvVault = DotenvVault::createImmutable([__DIR__, self::$folder]);
         self::assertCount(4, $dotenvVault->load());
     }
 
-    public function testLoadsFromEnvFile()
+    public function testLoadFromEnvFile()
     {
         $dotenvVault = DotenvVault::createImmutable([__DIR__, self::$folder]);
         $dotenvVault->load();
@@ -53,7 +53,43 @@ final class DotenvVaultTest extends TestCase
         self::assertEquals($_ENV['BAR'], 'baz');
     }
 
-    public function testLoadsFromEnvFileAndPathsPassedAsString()
+    public function testLoadFromEnvFileMutable()
+    {
+        $dotenvVault = DotenvVault::createMutable([__DIR__, self::$folder]);
+        $dotenvVault->load();
+
+        self::assertEquals($_ENV['FOO'], 'bar');
+        self::assertEquals($_ENV['BAR'], 'baz');
+    }
+
+    public function testLoadFromEnvFileUnsafeMutable()
+    {
+        $dotenvVault = DotenvVault::createUnsafeMutable([__DIR__, self::$folder]);
+        $dotenvVault->load();
+
+        self::assertEquals(getenv('FOO'), 'bar');
+        self::assertEquals(getenv('BAR'), 'baz');
+    }
+
+    public function testLoadFromEnvFileUnsafeImmutable()
+    {
+        $dotenvVault = DotenvVault::createUnsafeImmutable([__DIR__, self::$folder]);
+        $dotenvVault->load();
+
+        self::assertEquals(getenv('FOO'), 'bar');
+        self::assertEquals(getenv('BAR'), 'baz');
+    }
+
+    public function testSafeLoadFromEnvFile()
+    {
+        $dotenvVault = DotenvVault::createImmutable([__DIR__, self::$folder]);
+        $dotenvVault->safeLoad();
+
+        self::assertEquals($_ENV['FOO'], 'bar');
+        self::assertEquals($_ENV['BAR'], 'baz');
+    }
+
+    public function testLoadFromEnvFileAndPathsPassedAsString()
     {
         $dotenvVault = DotenvVault::createImmutable(self::$folder);
         $dotenvVault->load();
@@ -62,7 +98,7 @@ final class DotenvVaultTest extends TestCase
         self::assertEquals($_ENV['BAR'], 'baz');
     }
 
-    public function testLoadsFromEnvVaultFileWhenDotenvKeyPresent()
+    public function testLoadFromEnvVaultFileWhenDotenvKeyPresent()
     {
         $_ENV["DOTENV_KEY"] = 'dotenv://:key_ddcaa26504cd70a6fef9801901c3981538563a1767c297cb8416e8a38c62fe00@dotenv.org/vault/.env.vault?environment=development';
 
@@ -72,7 +108,7 @@ final class DotenvVaultTest extends TestCase
         self::assertEquals($_ENV['ALPHA'], 'zeta');
     }
 
-    public function testLoadsFromEnvVaultFileWhenDotenvKeyPresentAndPathsPassedAsString()
+    public function testLoadFromEnvVaultFileWhenDotenvKeyPresentAndPathsPassedAsString()
     {
         $_ENV["DOTENV_KEY"] = 'dotenv://:key_ddcaa26504cd70a6fef9801901c3981538563a1767c297cb8416e8a38c62fe00@dotenv.org/vault/.env.vault?environment=development';
 
@@ -80,5 +116,35 @@ final class DotenvVaultTest extends TestCase
         $dotenvVault->load();
 
         self::assertEquals($_ENV['ALPHA'], 'zeta');
+    }
+
+    public function testLoadFromEnvVaultFileWhenDotenvKeyPresentMutable()
+    {
+        $_ENV["DOTENV_KEY"] = 'dotenv://:key_ddcaa26504cd70a6fef9801901c3981538563a1767c297cb8416e8a38c62fe00@dotenv.org/vault/.env.vault?environment=development';
+
+        $dotenvVault = DotenvVault::createMutable([__DIR__, self::$folder]);
+        $dotenvVault->load();
+
+        self::assertEquals($_ENV['ALPHA'], 'zeta');
+    }
+
+    public function testLoadFromEnvVaultFileWhenDotenvKeyPresentUnsafeImmutable()
+    {
+        $_ENV["DOTENV_KEY"] = 'dotenv://:key_ddcaa26504cd70a6fef9801901c3981538563a1767c297cb8416e8a38c62fe00@dotenv.org/vault/.env.vault?environment=development';
+
+        $dotenvVault = DotenvVault::createUnsafeImmutable([__DIR__, self::$folder]);
+        $dotenvVault->load();
+
+        self::assertEquals(getenv('ALPHA'), 'zeta');
+    }
+
+    public function testLoadFromEnvVaultFileWhenDotenvKeyPresentUnsafeMutable()
+    {
+        $_ENV["DOTENV_KEY"] = 'dotenv://:key_ddcaa26504cd70a6fef9801901c3981538563a1767c297cb8416e8a38c62fe00@dotenv.org/vault/.env.vault?environment=development';
+
+        $dotenvVault = DotenvVault::createUnsafeMutable([__DIR__, self::$folder]);
+        $dotenvVault->load();
+
+        self::assertEquals(getenv('ALPHA'), 'zeta');
     }
 }
