@@ -177,6 +177,12 @@ class DotenvVault extends Dotenv {
     // public functions treated like private functions.
     // exposed publicly for convenience of your consumption.
     //
+
+    public function _log($message)
+    {
+        echo "[dotenv-vault][INFO] {$message}";
+    }
+
     public function _loadDotenv()
     {
         // $entries = $this->parser->parse($this->store->read());
@@ -186,7 +192,7 @@ class DotenvVault extends Dotenv {
     }
 
     public function _loadVault() {
-        echo '[dotenv-vault] Loading env from encrypted .env.vault';
+        $this->_log('Loading env from encrypted .env.vault');
 
         $decrypted = $this->_decryptVault();
 
