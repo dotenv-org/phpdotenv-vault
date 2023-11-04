@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [Unreleased](https://github.com/dotenv-org/phpdotenv-vault/compare/v0.2.2...master)
+## [Unreleased](https://github.com/dotenv-org/phpdotenv-vault/compare/v0.2.3...master)
+
+## 0.2.3
+
+### Added
+
+- echo/log out the dotenv-vault decryption message
 
 ## 0.2.2
 

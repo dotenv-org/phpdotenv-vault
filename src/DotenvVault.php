@@ -186,7 +186,7 @@ class DotenvVault extends Dotenv {
     }
 
     public function _loadVault() {
-        // _log('Loading env from encrypted .env.vault')
+        echo '[dotenv-vault] Loading env from encrypted .env.vault';
 
         $decrypted = $this->_decryptVault();
 
