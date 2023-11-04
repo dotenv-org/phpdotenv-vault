@@ -5,7 +5,7 @@
 Tests use PHPUnit.
 
 ```
-./vendor/bin/phpunit
+./vendor/bin/phpunit --testdox --display-deprecations
 ```
 
 ## Publishing

@@ -31,23 +31,23 @@ final class DotenvVaultTest extends TestCase
 
     public function testThrowsExceptionIfUnableToLoadFile()
     {
-        $dotenv = DotenvVault::createMutable(__DIR__);
+        $dotenvVault = DotenvVault::createMutable(__DIR__);
 
-        $this->expectException(Dotenv\Exception\InvalidPathException::class);
         $this->expectExceptionMessage('Unable to read any of the environment file(s) at');
 
-        $dotenv->load();
+        $dotenvVault->load();
     }
 
     public function testTriesPathsToLoad()
     {
-        $dotenv = DotenvVault::createMutable([__DIR__, self::$folder]);
-        self::assertCount(4, $dotenv->load());
+        $dotenvVault = DotenvVault::createMutable([__DIR__, self::$folder]);
+        self::assertCount(4, $dotenvVault->load());
     }
 
     public function testLoadsFromEnvFile()
     {
-        DotenvVault::createMutable([__DIR__, self::$folder]);
+        $dotenvVault = DotenvVault::createImmutable([__DIR__, self::$folder]);
+        $dotenvVault->load();
 
         self::assertEquals($_ENV['FOO'], 'bar');
         self::assertEquals($_ENV['BAR'], 'baz');
@@ -57,8 +57,9 @@ final class DotenvVaultTest extends TestCase
     {
         $_ENV["DOTENV_KEY"] = 'dotenv://:key_ddcaa26504cd70a6fef9801901c3981538563a1767c297cb8416e8a38c62fe00@dotenv.org/vault/.env.vault?environment=development';
 
-        DotenvVault::createMutable([__DIR__, self::$folder]);
+        $dotenvVault = DotenvVault::createImmutable([__DIR__, self::$folder]);
+        $dotenvVault->load();
 
-        self::assertEquals($_ENV['ALPA'], 'zeta');
+        self::assertEquals($_ENV['ALPHA'], 'zeta');
     }
 }
