@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [Unreleased](https://github.com/dotenv-org/phpdotenv-vault/compare/v0.2.3...master)
+## [Unreleased](https://github.com/dotenv-org/phpdotenv-vault/compare/v0.2.4...master)
+
+## 0.2.4
+
+### Changed
+
+- Move logging to `error_log` rather than `echo`.
 
 ## 0.2.3
 

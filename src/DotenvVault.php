@@ -180,7 +180,7 @@ class DotenvVault extends Dotenv {
 
     public function _log($message)
     {
-        echo "[dotenv-vault][INFO] {$message}";
+        error_log("[dotenv-vault][INFO] {$message}");
     }
 
     public function _loadDotenv()
