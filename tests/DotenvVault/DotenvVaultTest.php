@@ -29,6 +29,12 @@ final class DotenvVaultTest extends TestCase
         self::$folder = \dirname(__DIR__).'/fixtures/env';
     }
 
+    protected function setUp(): void {
+    }
+
+    protected function tearDown(): void {
+    }
+
     public function testThrowsExceptionIfUnableToLoadFile()
     {
         $dotenvVault = DotenvVault::createMutable(__DIR__);
@@ -135,7 +141,7 @@ final class DotenvVaultTest extends TestCase
         $dotenvVault = DotenvVault::createUnsafeImmutable([__DIR__, self::$folder]);
         $dotenvVault->load();
 
-        self::assertEquals(getenv('ALPHA'), 'zeta');
+        self::assertEquals($_ENV['ALPHA'], 'zeta');
     }
 
     public function testLoadFromEnvVaultFileWhenDotenvKeyPresentUnsafeMutable()

@@ -47,6 +47,7 @@ class DotenvVault extends Dotenv {
         $this->loader = $loader;
         $this->repository = $repository;
         $this->paths = $paths;
+
         parent::__construct($store, $parser, $loader, $repository);
     }
 
@@ -79,7 +80,6 @@ class DotenvVault extends Dotenv {
 
         return new self($builder->fileEncoding($fileEncoding)->make(), new Parser(), new Loader(), $repository, $paths);
     }
-
 
     /**
      * Create a new mutable dotenv instance with default repository.
@@ -179,9 +179,10 @@ class DotenvVault extends Dotenv {
     //
     public function _loadDotenv()
     {
-        $entries = $this->parser->parse($this->store->read());
+        // $entries = $this->parser->parse($this->store->read());
+        // return $this->loader->load($this->repository, $entries);
 
-        return $this->loader->load($this->repository, $entries);
+        return parent::load();
     }
 
     public function _loadVault() {
