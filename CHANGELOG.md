@@ -2,7 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [Unreleased](https://github.com/dotenv-org/phpdotenv-vault/compare/v0.1.3...master)
+## [Unreleased](https://github.com/dotenv-org/phpdotenv-vault/compare/v0.2.0...master)
+
+## 0.2.0
+
+### Added
+
+- Moved decryption to its own class for better testing and ease of usage
+
+### Fixed
+
+- DOTENV_KEY was not respected if set in the infrastructure. Fixed.
+- Decryptiong could fail related to some misconfigured logic. Fixed.
 
 ## 0.1.3
 
