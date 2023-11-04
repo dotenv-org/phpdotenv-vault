@@ -37,7 +37,7 @@ As early as possible in your application bootstrap process, load .env:
 require 'vendor/autoload.php';
 
 $dotenv = DotenvVault\DotenvVault::createImmutable(__DIR__);
-$dotenv->load();
+$dotenv->safeLoad();
 ```
 
 When your application loads, these variables will be available in `$_ENV` or `$_SERVER`:
