@@ -47,6 +47,7 @@ class DotenvVault extends Dotenv {
         $this->loader = $loader;
         $this->repository = $repository;
         $this->paths = $paths;
+        parent::__construct($store, $parser, $loader, $repository);
     }
 
     /**
