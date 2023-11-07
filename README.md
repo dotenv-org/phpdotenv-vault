@@ -40,10 +40,10 @@ $dotenv = DotenvVault\DotenvVault::createImmutable([__DIR__]);
 $dotenv->safeLoad();
 ```
 
-When your application loads, these variables will be available in `$_ENV` or `$_SERVER`:
+When your application loads, these variables will be available in `$_SERVER`:
 
 ```php
-$s3_bucket = $_ENV['S3_BUCKET'];
+$s3_bucket = $_SERVER['S3_BUCKET'];
 echo $s3_bucket;
 ```
 
